@@ -1,0 +1,21 @@
+{
+    "name": "skernl/contract",
+    "description": "This is a component library that must follow the standard contract.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Skernl\\Contract\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "wheakerd",
+            "email": "wheakerd@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "psr/container": "2.0.2"
+    }
+}
