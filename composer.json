@@ -1,21 +1,22 @@
 {
-    "name": "skernl/contract",
-    "description": "This is a component library that must follow the standard contract.",
+    "name": "super-kernel/contract",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Skernl\\Contract\\": "src/"
+            "SuperKernel\\Contract\\": "src/"
         }
     },
     "authors": [
         {
             "name": "wheakerd",
-            "email": "wheakerd@qq.com"
+            "email": "wheakerd@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
-        "psr/container": "2.0.2"
+        "psr/container": "^2.0@dev",
+        "psr/http-message": "^2.0@dev",
+        "psr/log": "^3.0@dev"
     }
 }
