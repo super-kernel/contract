@@ -15,6 +15,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
+        "php": ">=8.0",
         "psr/container": "^2.0@dev",
         "psr/http-message": "^2.0@dev",
         "psr/log": "^3.0@dev"
