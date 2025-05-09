@@ -18,7 +18,8 @@
         "php": ">=8.4",
         "psr/container": "^2.0@dev",
         "psr/http-message": "^2.0@dev",
-        "psr/log": "^3.0@dev"
+        "psr/log": "^3.0@dev",
+        "psr/event-dispatcher": "^1.0"
     },
     "repositories": [
         {
