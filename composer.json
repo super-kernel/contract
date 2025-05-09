@@ -19,5 +19,23 @@
         "psr/container": "^2.0@dev",
         "psr/http-message": "^2.0@dev",
         "psr/log": "^3.0@dev"
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.packagist.org"
+        },
+        {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        },
+        {
+            "type": "composer",
+            "url": "https://mirrors.tencent.com/composer/"
+        },
+        {
+            "type": "composer",
+            "url": "https://repo.huaweicloud.com/repository/php/"
+        }
+    ]
 }
