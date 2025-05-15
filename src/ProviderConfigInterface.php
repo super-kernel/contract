@@ -24,7 +24,7 @@ interface ProviderConfigInterface
 	/**
 	 * @return array Return the raw data of `superKernel` in all extra data.
 	 */
-	public function getAllExtraConfig(): array;
+	public function getAllProviderConfigs(): array;
 
 	/**
 	 * @return array Return all raw data of `extra`.
