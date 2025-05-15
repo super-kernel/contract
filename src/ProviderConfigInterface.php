@@ -11,8 +11,6 @@ use Composer\Autoload\ClassLoader;
  */
 interface ProviderConfigInterface
 {
-	public function __construct(ClassLoader $classLoader);
-
 	public function getCommands(): array;
 
 	public function getDependencies(): array;
