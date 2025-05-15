@@ -24,12 +24,12 @@ interface ProviderConfigInterface
 	/**
 	 * @return array Return the raw data of `superKernel` in all extra data.
 	 */
-	public function getAllData(): array;
+	public function getAllExtraConfig(): array;
 
 	/**
 	 * @return array Return all raw data of `extra`.
 	 */
-	public function getAllRawData(): array;
+	public function getAllExtraData(): array;
 
 	public function __invoke(): ClassLoader;
 }
