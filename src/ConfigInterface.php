@@ -6,32 +6,20 @@ namespace SuperKernel\Contract;
 interface ConfigInterface
 {
 	/**
-	 * Finds an entry of the container by its identifier and returns it.
+	 * Finds an entry that implements the given interface and returns it.
 	 *
-	 * @param string|null $key     identifier of the entry to look for.
-	 * @param mixed       $default default value of the entry when does not found.
+	 * @param string $interface
 	 *
 	 * @return mixed entry
 	 */
-	public function get(?string $key = null, mixed $default = null): mixed;
+	public function get(string $interface): object;
 
 	/**
-	 * Returns true if the container can return an entry for the given identifier.
-	 * Returns false otherwise.
+	 * Returns true if the given interface can return entries for its implementing classes, false otherwise.
 	 *
-	 * @param string $key
+	 * @param string $interface
 	 *
 	 * @return bool
 	 */
-	public function has(string $key): bool;
-
-	/**
-	 * Set a value to the container by its identifier.
-	 *
-	 * @param string $key identifier of the entry to set
-	 * @param mixed  $value the value that save to container
-	 *
-	 * @return void
-	 */
-	public function set(string $key, mixed $value): void;
+	public function has(string $interface): bool;
 }
