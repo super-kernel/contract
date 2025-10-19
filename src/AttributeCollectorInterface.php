@@ -17,9 +17,9 @@ interface AttributeCollectorInterface
 	/**
 	 * For a given entry, find and return its mapped real entry.
 	 *
-	 * @param string $class
+	 * @param string $id
 	 *
 	 * @return string
 	 */
-	public function getRealEntry(string $class): string;
+	public function getRealEntry(string $id): string;
 }
