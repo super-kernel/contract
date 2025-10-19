@@ -6,9 +6,9 @@ namespace SuperKernel\Contract;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 /**
+ * The interface extends PsrContainerInterface.
+ *
  * @see PsrContainerInterface
- * @ContainerInterface
- * @\SuperKernel\Contract\ContainerInterface
  */
 interface ContainerInterface extends PsrContainerInterface
 {

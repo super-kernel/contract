@@ -12,7 +12,7 @@ use ReflectionProperty;
  * Describes the interface for a reflector, which exposes methods for reading information about the reflected classes
  * its collects.
  */
-interface ReflectionManagerInterface
+interface ReflectionCollectorInterface
 {
 	/**
 	 * Finds a reflector by class name and returns it.
@@ -44,15 +44,6 @@ interface ReflectionManagerInterface
 	public function reflectProperty(string $classname, string $propertyName): ReflectionProperty;
 
 	/**
-	 * Finds all annotations by class name and returns them.
-	 *
-	 * @param string $name
-	 *
-	 * @return array<string>
-	 */
-	public function getAttributes(string $name): array;
-
-	/**
 	 * Finds a reflector by class name and returns all annotation reflectors for the given annotation class name.
 	 *
 	 * @param string      $classname
@@ -60,5 +51,5 @@ interface ReflectionManagerInterface
 	 *
 	 * @return array<ReflectionAttribute>
 	 */
-	public function getClassAnnotations(string $classname, ?string $attributeName = null): array;
+	public function getAttributesByClass(string $classname, ?string $attributeName = null): array;
 }
