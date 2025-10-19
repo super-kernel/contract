@@ -10,7 +10,7 @@ interface AttributeCollectorInterface
 	 *
 	 * @param string $attributeName
 	 *
-	 * @return array<string, object>
+	 * @return array<string, array<string, object>>
 	 */
 	public function getAttributes(string $attributeName): array;
 
