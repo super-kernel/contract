@@ -22,13 +22,4 @@ interface AttributeCollectorInterface
 	 * @return string
 	 */
 	public function getRealEntry(string $class): string;
-
-	/**
-	 * Determines whether a given entry exists.
-	 *
-	 * @param string $class
-	 *
-	 * @return bool
-	 */
-	public function hasRealEntry(string $class): bool;
 }
