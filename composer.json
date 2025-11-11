@@ -2,24 +2,31 @@
     "name": "super-kernel/contract",
     "type": "library",
     "license": "MIT",
+    "description": "The contract component for super-kernel.",
+    "keywords": [
+        "php",
+        "swoole",
+        "super-kernel",
+        "contract"
+    ],
     "autoload": {
         "psr-4": {
             "SuperKernel\\Contract\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "wheakerd",
-            "email": "wheakerd@gmail.com"
-        }
-    ],
     "minimum-stability": "stable",
     "require": {
         "php": ">=8.4",
         "psr/container": "^2.0@dev",
         "psr/http-message": "^2.0@dev",
         "psr/log": "^3.0@dev",
-        "psr/event-dispatcher": "^1.0",
+        "psr/event-dispatcher": "^1.0"
+    },
+    "require-dev": {
         "symfony/console": "^7.3"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "classmap-authoritative": true
     }
 }
