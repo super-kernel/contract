@@ -39,7 +39,7 @@ use ReflectionZendExtension;
  * access model for reflection-intensive subsystems such as dependency injection, attribute processing, and runtime
  * metadata analysis.
  */
-interface ReflectionManagerInterface
+interface ReflectorInterface
 {
 	/**
 	 * Retrieves the reflector associated with the given class name, instantiating it on first
