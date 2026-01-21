@@ -49,7 +49,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionClass
 	 */
-	public static function reflectClass(string $class): ReflectionClass;
+	public function reflectClass(string $class): ReflectionClass;
 
 	/**
 	 * Retrieves the class constant reflector for the given class and constant name, instantiating it on first access.
@@ -59,7 +59,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionClassConstant
 	 */
-	public static function reflectConstant(string $class, string $constant): ReflectionClassConstant;
+	public function reflectConstant(string $class, string $constant): ReflectionClassConstant;
 
 	/**
 	 * Retrieves the enum reflector for the given enum name, instantiating it on first access.
@@ -68,7 +68,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionClassConstant
 	 */
-	public static function reflectEnum(string $class): ReflectionClassConstant;
+	public function reflectEnum(string $class): ReflectionClassConstant;
 
 	/**
 	 * Retrieves the enum unit case reflector for the given enum and case name, instantiating it on first access.
@@ -78,7 +78,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionEnumUnitCase
 	 */
-	public static function reflectEnumUnitCase(string $class, string $constant): ReflectionEnumUnitCase;
+	public function reflectEnumUnitCase(string $class, string $constant): ReflectionEnumUnitCase;
 
 	/**
 	 * Retrieves the enum backed case reflector for the given enum and case name, instantiating it on first access.
@@ -88,7 +88,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionEnumBackedCase
 	 */
-	public static function reflectEnumBackedCase(string $class, string $constant): ReflectionEnumBackedCase;
+	public function reflectEnumBackedCase(string $class, string $constant): ReflectionEnumBackedCase;
 
 	/**
 	 * Retrieves the Zend extension reflector for the given extension name, instantiating it on first access.
@@ -97,7 +97,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionZendExtension
 	 */
-	public static function reflectZendExtension(string $name): ReflectionZendExtension;
+	public function reflectZendExtension(string $name): ReflectionZendExtension;
 
 	/**
 	 * Retrieves the extension reflector for the given extension name, instantiating it on first access.
@@ -106,7 +106,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionExtension
 	 */
-	public static function reflectExtension(string $name): ReflectionExtension;
+	public function reflectExtension(string $name): ReflectionExtension;
 
 	/**
 	 * Retrieves the function reflector for the given function name, instantiating it on first access.
@@ -115,7 +115,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionFunction
 	 */
-	public static function reflectFunction(Closure|string $function): ReflectionFunction;
+	public function reflectFunction(Closure|string $function): ReflectionFunction;
 
 	/**
 	 * Retrieves the method reflector for the given class and method name, instantiating it on first access.
@@ -125,7 +125,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionMethod
 	 */
-	public static function reflectMethod(string $class, string $method): ReflectionMethod;
+	public function reflectMethod(string $class, string $method): ReflectionMethod;
 
 	/**
 	 * Retrieves the object reflector for the given class and method, instantiating it on first access.
@@ -135,7 +135,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionObject
 	 */
-	public static function reflectObject(string $class, string $method): ReflectionObject;
+	public function reflectObject(string $class, string $method): ReflectionObject;
 
 	/**
 	 * Retrieves the method parameter reflector for the given class, method, and parameter name or position,
@@ -147,7 +147,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionParameter
 	 */
-	public static function reflectMethodParameter(string $class, string $method, int|string $param): ReflectionParameter;
+	public function reflectMethodParameter(string $class, string $method, int|string $param): ReflectionParameter;
 
 	/**
 	 * Retrieves the function parameter reflector for the given function and parameter name or position, instantiating
@@ -158,7 +158,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionParameter
 	 */
-	public static function reflectFunctionParameter(string $function, int|string $param): ReflectionParameter;
+	public function reflectFunctionParameter(string $function, int|string $param): ReflectionParameter;
 
 	/**
 	 * Retrieves the property reflector for the given class and property name, instantiating it on first access.
@@ -168,7 +168,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionProperty
 	 */
-	public static function reflectProperty(string $class, string $property): ReflectionProperty;
+	public function reflectProperty(string $class, string $property): ReflectionProperty;
 
 	/**
 	 * Retrieves the generator reflector for the given generator instance, instantiating it on first access.
@@ -177,7 +177,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionGenerator
 	 */
-	public static function reflectGenerator(Generator $generator): ReflectionGenerator;
+	public function reflectGenerator(Generator $generator): ReflectionGenerator;
 
 	/**
 	 * Retrieves the fiber reflector for the given fiber instance, instantiating it on first access.
@@ -186,7 +186,7 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionFiber
 	 */
-	public static function reflectFiber(Fiber $fiber): ReflectionFiber;
+	public function reflectFiber(Fiber $fiber): ReflectionFiber;
 
 	/**
 	 * Retrieves the reference reflector for the given array and key, instantiating it on first access, or returns null
@@ -197,5 +197,5 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionReference|null
 	 */
-	public static function reflectReference(array $array, int|string $key): ?ReflectionReference;
+	public function reflectReference(array $array, int|string $key): ?ReflectionReference;
 }
