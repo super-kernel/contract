@@ -8,6 +8,8 @@ use Fiber;
 use Generator;
 use ReflectionClass;
 use ReflectionClassConstant;
+use ReflectionConstant;
+use ReflectionEnum;
 use ReflectionEnumBackedCase;
 use ReflectionEnumUnitCase;
 use ReflectionExtension;
@@ -59,16 +61,25 @@ interface ReflectorInterface
 	 *
 	 * @return ReflectionClassConstant
 	 */
-	public function reflectConstant(string $class, string $constant): ReflectionClassConstant;
+	public function reflectClassConstant(string $class, string $constant): ReflectionClassConstant;
+
+	/**
+	 * Retrieves the global constant reflector for the given constant name, instantiating it on first access.
+	 *
+	 * @param string $name
+	 *
+	 * @return ReflectionConstant
+	 */
+	public function reflectConstant(string $name): ReflectionConstant;
 
 	/**
 	 * Retrieves the enum reflector for the given enum name, instantiating it on first access.
 	 *
 	 * @param string $class
 	 *
-	 * @return ReflectionClassConstant
+	 * @return ReflectionEnum
 	 */
-	public function reflectEnum(string $class): ReflectionClassConstant;
+	public function reflectEnum(string $class): ReflectionEnum;
 
 	/**
 	 * Retrieves the enum unit case reflector for the given enum and case name, instantiating it on first access.
