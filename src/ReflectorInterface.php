@@ -38,7 +38,7 @@ use UnitEnum;
  * access model for reflection-intensive subsystems such as dependency injection, attribute processing, and runtime
  * metadata analysis.
  */
-interface ReflectorProviderInterface
+interface ReflectorInterface
 {
 	/**
 	 * Retrieves the reflector associated with the given class name or object, instantiating it on first access.
@@ -73,7 +73,7 @@ interface ReflectorProviderInterface
 	/**
 	 * Retrieves the enum reflector for the given enum name, instantiating it on first access.
 	 *
-	 * @param UnitEnum|class-string $class
+	 * @param UnitEnum|class-string<UnitEnum> $class
 	 *
 	 * @return ReflectionEnum
 	 */
@@ -82,7 +82,7 @@ interface ReflectorProviderInterface
 	/**
 	 * Retrieves the enum unit case reflector for the given enum and case name, instantiating it on first access.
 	 *
-	 * @param UnitEnum|class-string $class
+	 * @param UnitEnum|class-string<UnitEnum> $class
 	 * @param string                $constant
 	 *
 	 * @return ReflectionEnumUnitCase
@@ -92,7 +92,7 @@ interface ReflectorProviderInterface
 	/**
 	 * Retrieves the enum backed case reflector for the given enum and case name, instantiating it on first access.
 	 *
-	 * @param BackedEnum|class-string $class
+	 * @param BackedEnum|class-string<BackedEnum> $class
 	 * @param string                  $constant
 	 *
 	 * @return ReflectionEnumBackedCase
