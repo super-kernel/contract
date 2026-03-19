@@ -82,9 +82,11 @@ interface AttributeMetadataInterface
 	/**
 	 * Returns the reflector representing the declaration context.
 	 *
+	 * @param ReflectionCollectorInterface $reflectionCollector
+	 *
 	 * @return Reflector
 	 */
-	public function getReflector(): Reflector;
+	public function getReflector(ReflectionCollectorInterface $reflectionCollector): Reflector;
 
 	/**
 	 * Returns the class name in which the attribute is declared.
