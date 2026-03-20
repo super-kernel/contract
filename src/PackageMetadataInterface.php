@@ -9,5 +9,8 @@ interface PackageMetadataInterface
 
 	public function getReference(): ?string;
 
-	public function getClassmap(): array;
+	/**
+	 * @return array<AttributeMetadataInterface>
+	 */
+	public function getAttributes(): array;
 }
