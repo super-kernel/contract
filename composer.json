@@ -1,0 +1,38 @@
+{
+    "name": "super-kernel/contract",
+    "description": "Core interface definitions for the super-kernel framework. This package provides the abstract contracts to guide dependency injection and ensures architectural integrity by preventing direct implementation coupling.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "framework",
+        "super-kernel",
+        "contract",
+        "interfaces"
+    ],
+    "homepage": "https://github.com/super-kernel/contract",
+    "support": {
+        "issues": "https://github.com/super-kernel/contract/issues",
+        "source": "https://github.com/super-kernel/contract"
+    },
+    "autoload": {
+        "psr-4": {
+            "SuperKernel\\Contract\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "classmap-authoritative": true,
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "require": {
+        "php": "~8.4.0",
+        "psr/container": "~2.0.0",
+        "psr/event-dispatcher": "~1.0.0",
+        "psr/http-message": "~2.0.0",
+        "psr/log": "~3.0.0",
+        "symfony/console": "~8.0.0"
+    }
+}
