@@ -43,6 +43,16 @@ interface AnnotationCollectorInterface
 	public function getAnnotationsByProperty(string $class, string $property): array;
 
 	/**
+	 * Returns attributes declared on the specified class constant.
+	 *
+	 * @param string $class
+	 * @param string $constant
+	 *
+	 * @return array<AnnotationInterface>
+	 */
+	public function getAnnotationsByClassConstant(string $class, string $constant): array;
+
+	/**
 	 * Returns class attributes matching the specified attribute class.
 	 *
 	 * @param string $attribute
