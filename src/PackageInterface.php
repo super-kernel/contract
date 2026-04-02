@@ -11,7 +11,7 @@ interface PackageInterface
 
 	public function getReference(): ?string;
 
-	public function getClassAutoloader(): ClassLoaderInterface;
+	public function getClassAutoloader(PathResolverInterface $pathResolver): ClassLoaderInterface;
 
 	public function getFiles(): array;
 
