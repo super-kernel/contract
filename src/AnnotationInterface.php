@@ -27,6 +27,11 @@ interface AnnotationInterface
 	 */
 	public const int TARGET_CLASS_CONSTANT = Attribute::TARGET_CLASS_CONSTANT;
 
+	/**
+	 * Attribute declared on all.
+	 */
+	public const int TARGET_ALL = Attribute::TARGET_ALL;
+
 	public function getName(): string;
 
 	public function getInstance(): object;
