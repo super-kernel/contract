@@ -3,40 +3,62 @@ declare(strict_types=1);
 
 namespace SuperKernel\Contract;
 
-use RuntimeException;
-
 /**
- * High-performance Static Class Autoloader for SuperKernel.
+ * Interface ClassAutoloaderInterface
  *
- * This loader provides a mandatory, high-speed lookup mechanism using a pre-defined class map.
- * It is designed for production environments to bypass expensive PSR-4 filesystem checks by providing O(1) resolution
- * for core framework components.
+ * High-performance class resolution mechanism based on explicit mapping.
+ *
+ * DESIGN GUIDELINES:
+ *
+ * 1. IMMUTABILITY
+ *
+ *      Implementations SHOULD be designed as immutable. The internal class map SHOULD NOT be modified after
+ *      registration to ensure resolution consistency across the SPL stack.
+ *
+ * 2. HIJACKING & PRIORITY
+ *
+ *      Callers SHOULD manage multiple loader instances to control loading logic. To override or "hijack" a specific
+ *      class loading behavior, a new loader instance with higher priority ($prepend = true) SHOULD be registered
+ *      before the target class is first referenced.
+ *
+ * 3. PERSISTENCE & CONCURRENCY
+ *
+ *      In long-running environments (e.g., Multi-process, Coroutines, Threads):
+ *
+ *          - MANDATORY WARM-UP: Callers MUST trigger a full warm-up (preloading all necessary classes) before
+ *          attempting to unregister loader.
+ *
+ *          - PERFORMANCE OPTIMIZATION: Once the warm-up is complete and all class definitions are in memory, callers
+ *          SHOULD call unregister() to eliminate redundant SPL stack polling overhead.
+ *
+ *          - RISK MITIGATION: This sequence prevents "partial loading" failures or inconsistent states in worker
+ *          processes or concurrent handlers.
  */
 interface ClassAutoloaderInterface
 {
 	/**
-	 * Merges an additional map into the existing class map registry.
+	 * Returns the current class map registry.
 	 *
-	 * @param array<non-empty-string, non-empty-string> $classMap An associative array of FQCNs to absolute file paths.
+	 * @return array<class-string, string> An associative array where keys are FQCNs and values are their corresponding
+	 *                                     absolute file paths.
+	 */
+	public function getClassMap(): array;
+
+	/**
+	 * Registers the instance into the SPL autoloader stack.
+	 *
+	 * @param bool $prepend If true, `spl_autoload_register()` will prepend the autoloader on the autoload queue instead
+	 *                      of appending it.
 	 *
 	 * @return void
 	 */
-	public function addClassMap(array $classMap): void;
+	public function register(bool $prepend = false): void;
 
 	/**
-	 * Registers this instance as an autoloader in the SPL stack.
+	 * Unregisters the instance from the SPL autoloader stack.
 	 *
-	 * This method enforces a mandatory prepend behavior. The loader is ALWAYS placed
-	 * at the top of the SPL stack to ensure maximum performance by intercepting class
-	 * resolution before any other registered loaders.
-	 *
-	 * @return void
-	 * @throws RuntimeException If the autoloader cannot be registered.
-	 */
-	public function register(): void;
-
-	/**
-	 * Unregisters this instance from the SPL autoloader stack.
+	 * IMPORTANT: In persistent applications, ensure a full class warm-up has been performed before calling this method
+	 * to avoid runtime resolution errors.
 	 *
 	 * @return void
 	 */
