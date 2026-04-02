@@ -86,5 +86,5 @@ interface AnnotationCollectorInterface
 	 *
 	 * @return array<AnnotationInterface>
 	 */
-	public function getPropertiesByClassConstant(string $attribute): array;
+	public function getClassConstantsByAttribute(string $attribute): array;
 }
