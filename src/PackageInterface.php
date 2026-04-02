@@ -11,7 +11,7 @@ interface PackageInterface
 
 	public function getReference(): ?string;
 
-	public function getClassAutoloader(): ClassAutoloaderInterface;
+	public function getClassAutoloader(): ClassLoaderInterface;
 
 	public function getFiles(): array;
 

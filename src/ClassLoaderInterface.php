@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace SuperKernel\Contract;
 
 /**
- * Interface ClassAutoloaderInterface
+ * Interface ClassLoaderInterface
  *
  * High-performance class resolution mechanism based on explicit mapping.
  *
@@ -34,7 +34,7 @@ namespace SuperKernel\Contract;
  *          - RISK MITIGATION: This sequence prevents "partial loading" failures or inconsistent states in worker
  *          processes or concurrent handlers.
  */
-interface ClassAutoloaderInterface
+interface ClassLoaderInterface
 {
 	/**
 	 * Returns the current class map registry.
