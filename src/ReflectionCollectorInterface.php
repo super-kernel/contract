@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace SuperKernel\Contract;
@@ -20,6 +21,7 @@ use ReflectionFunction;
 use ReflectionGenerator;
 use ReflectionMethod;
 use ReflectionObject;
+use ReflectionParameter;
 use ReflectionProperty;
 use ReflectionReference;
 use ReflectionZendExtension;
@@ -69,7 +71,7 @@ interface ReflectionCollectorInterface
 	 * @template T of UnitEnum
 	 * @param T|class-string<T> $class
 	 *
-	 * @return ReflectionEnum
+	 * @return ReflectionEnum<T>
 	 * @throws ReflectionException If the provided name is not a valid Enum.
 	 */
 	public function reflectEnum(UnitEnum|string $class): ReflectionEnum;
@@ -77,8 +79,9 @@ interface ReflectionCollectorInterface
 	/**
 	 * Resolves a ReflectionEnumUnitCase for an Enum case.
 	 *
-	 * @param UnitEnum|class-string<UnitEnum> $class
-	 * @param non-empty-string                $constant
+	 * @template T of UnitEnum
+	 * @param T|class-string<T> $class
+	 * @param non-empty-string  $constant
 	 *
 	 * @return ReflectionEnumUnitCase
 	 * @throws ReflectionException If the enum name is invalid or the case does not exist.
@@ -88,8 +91,9 @@ interface ReflectionCollectorInterface
 	/**
 	 * Resolves a ReflectionEnumBackedCase for a Backed Enum case.
 	 *
-	 * @param BackedEnum|class-string<BackedEnum> $class
-	 * @param non-empty-string                    $constant
+	 * @template T of BackedEnum
+	 * @param T|class-string<T> $class
+	 * @param non-empty-string  $constant
 	 *
 	 * @return ReflectionEnumBackedCase
 	 * @throws ReflectionException If the enum is not a BackedEnum or the case is undefined.
@@ -130,7 +134,7 @@ interface ReflectionCollectorInterface
 	 * Resolves a ReflectionMethod for a class method.
 	 *
 	 * @param object|class-string $class
-	 * @param string              $method
+	 * @param non-empty-string    $method
 	 *
 	 * @return ReflectionMethod
 	 * @throws ReflectionException If the method does not exist in the specified class or object instance.
@@ -138,14 +142,25 @@ interface ReflectionCollectorInterface
 	public function reflectMethod(object|string $class, string $method): ReflectionMethod;
 
 	/**
+	 * Resolves a ReflectionParameter for a function, closure, or class method parameter.
+	 *
+	 * @param Closure|callable-string|array{class-string|object, non-empty-string} $function
+	 * @param int|non-empty-string                                                $parameter
+	 *
+	 * @return ReflectionParameter
+	 * @throws ReflectionException If the function, method, or parameter does not exist.
+	 */
+	public function reflectParameter(Closure|array|string $function, int|string $parameter): ReflectionParameter;
+
+	/**
 	 * Resolves a ReflectionObject for a specific runtime instance.
 	 *
 	 * @template T of object
-	 * @param object $class
+	 * @param T $object
 	 *
-	 * @return ReflectionObject<T> If the provided argument is not a valid object instance.
+	 * @return ReflectionObject<T>
 	 */
-	public function reflectObject(object $class): ReflectionObject;
+	public function reflectObject(object $object): ReflectionObject;
 
 	/**
 	 * Resolves a ReflectionProperty for a class property.
@@ -179,7 +194,7 @@ interface ReflectionCollectorInterface
 	/**
 	 * Resolves a ReflectionReference for an array element if it is a reference.
 	 *
-	 * @param array                $array
+	 * @param array<array-key, mixed> $array
 	 * @param int|non-empty-string $key
 	 *
 	 * @return ReflectionReference|null Returns null if the specified key is not a reference.

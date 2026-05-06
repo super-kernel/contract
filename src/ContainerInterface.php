@@ -1,12 +1,17 @@
 <?php
+
 declare(strict_types=1);
 
 namespace SuperKernel\Contract;
 
+use Psr\Container\ContainerInterface as PsrContainerInterface;
+
 /**
- * Containers only manage long-lived objects, and short-lived objects are managed by the
- * caller {@see https://www.php-fig.org/psr/psr-11/}.
+ * Framework container contract.
+ *
+ * Containers are responsible for shared application services. Ephemeral objects should be created by the caller or by
+ * dedicated factories.
  */
-interface ContainerInterface extends \Psr\Container\ContainerInterface
+interface ContainerInterface extends PsrContainerInterface
 {
 }

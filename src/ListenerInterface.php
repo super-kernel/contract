@@ -1,17 +1,21 @@
 <?php
-declare (strict_types=1);
+
+declare(strict_types=1);
 
 namespace SuperKernel\Contract;
 
+/**
+ * @template TEvent of object
+ */
 interface ListenerInterface
 {
 	/**
-	 * @return array<class-string>
+	 * @return list<class-string<TEvent>>
 	 */
 	public function listen(): array;
 
 	/**
-	 * @param object $event
+	 * @param TEvent $event
 	 */
 	public function process(object $event): void;
 }
