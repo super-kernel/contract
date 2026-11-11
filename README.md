@@ -4,40 +4,150 @@
 
 # SuperKernel Contract
 
-`super-kernel/contract` holds the interfaces shared by otherwise independent SuperKernel components. It contains interfaces only: depending on it lets a package type against a shared boundary without selecting an implementation. Install the component that implements a contract to obtain it from the container.
+`super-kernel/contract` holds the interfaces that SuperKernel packages share, so that code can depend on a capability, such as the container, configuration, or reflection, without choosing the package that implements it.
 
-## Contracts
+## Installation
 
-- **Application**: `ApplicationInterface` exposes the selected application's `run(): int` boundary without selecting its concrete host or runtime. Implemented by `super-kernel/framework`.
-- **Project paths**: `BasePathInterface` extends `Stringable` and returns the canonical project directory or the running application's `phar://` root. `VendorDirInterface` is a separate `Stringable` value for the Composer dependency directory, which need not exist. Implemented by `super-kernel/composer`.
-- **Container**: `ContainerInterface` is the shared-service boundary used by framework components while retaining PSR-11 interoperability. Class and interface identifiers resolve to compatible instances; other PSR-11 identifiers may return any value. Implemented by `super-kernel/di`.
-- **Configuration**: `ConfigInterface::has(string $interface, ?string $name = null)` and `get(string $interface, ?string $name = null): ?object` provide typed configuration. `SingleConfigInterface` marks one configuration object; `MultipleConfigInterface` marks a source of attributed item methods. A sole item is automatically the default. With several items, unnamed lookup requires an explicit default; named lookups remain available without one. Implemented by `super-kernel/config`.
-- **Packages**: `PackageManagerInterface` provides deterministic root and locked package enumeration, case-insensitive name lookup, exact declared-type filtering, environment requirements, per-package and aggregate class maps, and exact class ownership. Package results use `PackageMetadataInterface`; environment requirements use `EnvironmentRequirementInterface` for the platform name, constraint, declaring package, and root development flag. `version(): ?string` returns the exact declared string, or null when the root manifest omits it, without inference, normalization, comparison, or format validation. Inject `VendorDirInterface` for the dependency directory. Implemented by `super-kernel/composer`.
-- **Autoloading**: `AutoLoaderInterface` covers SPL invocation, pending mappings, preload interceptors, and registration and removal status. Removal failures are `RuntimeException`. Implemented by `super-kernel/autoloader`.
-- **Attribute collection**: `AnnotationCollectorInterface` provides package-aware exact and assignable lookup of class, method, and property Attributes. Lookups return trusted Attribute instances through `AttributeMetadataInterface<T>` (`name()`, `attribute()`, and `types()`), and method results keep their declaring classes, exact method names, first-package ownership, and ordered matching metadata. `PackageAnnotationsInterface` exposes one package's name, reference, and declared class, method, and property maps. Implemented by `super-kernel/annotator`.
-- **Property injection**: `PropertyAttributeHandlerInterface` and `PropertyContextInterface` bind native property Attributes to container-bound handlers through an assignment context. Consumed by `super-kernel/di`.
-- **Events**: `EventInterface` marks framework and component events without prescribing payload shape, listener behavior, or a dispatcher implementation. Framework events are declared by `super-kernel/event`.
-- **Listeners**: `ListenerInterface` exposes the indexed list of event class names a listener handles and the object-typed `process()` entry point for matching events. Implementations that declare multiple events distinguish the concrete event inside `process()`. Dispatched by `super-kernel/event-dispatcher`.
-- **Exception dispatch**: `ExceptionDispatcherInterface` accepts one `Throwable` and returns `void`. Implemented by `super-kernel/exception-dispatcher`.
-- **Reflection**: `ReflectorInterface` returns reusable native `Reflection*` objects without translating PHP's native inspection API and failures. Implemented by `super-kernel/reflector`.
-- **Named logging**: `StdoutLoggerInterface` identifies SuperKernel's PSR-3 stdout service for framework and exception records without selecting a handler, formatter, channel, or minimum level. Applications may replace its transport, threshold, and formatter. Implemented by `super-kernel/logger`.
+```bash
+composer require super-kernel/contract
+```
 
-## Annotation metadata
+The package needs the `reflection` extension, which PHP includes by default, and installs `psr/container` and `psr/log`, whose interfaces two of its contracts extend. To obtain a working service for a contract, install the package that implements it.
 
-`AnnotationCollectorInterface::getPackage()` returns `?PackageAnnotationsInterface`, and array results expose the shared metadata interfaces, so consumers can provide independent metadata implementations without a concrete Annotator model. These interfaces do not promise serialization support for arbitrary implementations: Annotator's cache admits only its own models.
+## What it provides
 
-## Scan diagnostics capability
+- The container, application, and configuration contracts that application code receives by injection.
+- The project path, package metadata, and Attribute metadata contracts that `skernel build` metadata is restored into.
+- The event, listener, and exception dispatch contracts.
+- The reflection, autoloading, and logging contracts.
+- The extension contract for custom property Attributes.
 
-`ScanDiagnosticsInterface` is an independent read capability with only `getDiagnostics(): array`. It is not an additional collector binding. Annotator packages and collections implement it; other `AnnotationCollectorInterface` and `PackageAnnotationsInterface` implementations need not add methods.
+It does not provide:
 
-Rows contain exactly `sequence` (positive scan-wide integer), `package` (normalized non-empty owner name), `class`, `exception_type` (non-empty captured strings), and `message` (original string bytes). A package exposes its subset, while a complete collection combines subsets in scan order. Captured names need not exist in the runtime and must not be autoloaded just to read diagnostics. No Throwable is part of the contract.
+- an implementation, class, trait, or enum: it contains interfaces only;
+- concrete events; `super-kernel/event` declares them;
+- an execution-context abstraction; `super-kernel/context` offers its own static API.
+
+## Quick start
+
+Type a service against a contract. Save it as `src/Report/ClassReport.php`:
 
 ```php
-use SuperKernel\Contract\AnnotationCollectorInterface;
-use SuperKernel\Contract\ScanDiagnosticsInterface;
+<?php
 
-/** @var AnnotationCollectorInterface $collector */
-if ($collector instanceof ScanDiagnosticsInterface) {
-    $diagnostics = $collector->getDiagnostics();
+declare(strict_types=1);
+
+namespace Src\Report;
+
+use ReflectionMethod;
+use SuperKernel\Contract\ReflectorInterface;
+
+use function count;
+
+final readonly class ClassReport
+{
+    public function __construct(private ReflectorInterface $reflector)
+    {
+    }
+
+    /**
+     * @param class-string $class
+     */
+    public function describe(string $class): string
+    {
+        $reflection = $this->reflector->reflectClass($class);
+        $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
+
+        return $reflection->getShortName() . ' has ' . count($methods) . ' public methods';
+    }
 }
 ```
+
+Give it a class to describe. Save it as `src/Billing/Invoice.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Src\Billing;
+
+final class Invoice
+{
+    public function total(): int
+    {
+        return 0;
+    }
+
+    public function currency(): string
+    {
+        return 'EUR';
+    }
+}
+```
+
+In an application created from `super-kernel/skeleton`, the container supplies `super-kernel/reflector`'s implementation. Save the script as `bin/report.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Src\Billing\Invoice;
+use Src\Report\ClassReport;
+use SuperKernel\Context\ApplicationContext;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+echo ApplicationContext::getContainer()->get(ClassReport::class)->describe(Invoice::class), PHP_EOL;
+```
+
+Build the project and run the script:
+
+```bash
+skernel build
+php bin/report.php
+```
+
+It prints `Invoice has 2 public methods`.
+
+## Public surface
+
+| Name | Kind | Purpose |
+| --- | --- | --- |
+| `SuperKernel\Contract\ContainerInterface` | Interface | The PSR-11 container of shared services; a class or interface identifier returns an instance of that type. |
+| `SuperKernel\Contract\ApplicationInterface` | Interface | The application of the runtime; `run()` returns the process status. |
+| `SuperKernel\Contract\ConfigInterface` | Interface | Checks and loads typed configuration items, optionally by name. |
+| `SuperKernel\Contract\SingleConfigInterface` | Interface | Marks a configuration object that is itself the default item. |
+| `SuperKernel\Contract\MultipleConfigInterface` | Interface | Marks a configuration source whose methods provide named items. |
+| `SuperKernel\Contract\BasePathInterface` | Interface | The project directory, or the `phar://` root of a packaged application, as a string. |
+| `SuperKernel\Contract\VendorDirInterface` | Interface | The Composer vendor directory as a string. |
+| `SuperKernel\Contract\PackageManagerInterface` | Interface | The root and installed packages, their environment requirements, and their class maps. |
+| `SuperKernel\Contract\PackageMetadataInterface` | Interface | One package: name, version, reference, and located path. |
+| `SuperKernel\Contract\EnvironmentRequirementInterface` | Interface | One requirement on a Composer platform package and the package that declares it. |
+| `SuperKernel\Contract\AnnotationCollectorInterface` | Interface | Finds the collected Attributes of classes, methods, and properties. |
+| `SuperKernel\Contract\AttributeMetadataInterface` | Interface | One collected Attribute instance and its captured types. |
+| `SuperKernel\Contract\PackageAnnotationsInterface` | Interface | The collected Attributes of one package. |
+| `SuperKernel\Contract\ScanDiagnosticsInterface` | Interface | Returns the classes that `skernel build` could not collect. |
+| `SuperKernel\Contract\PropertyAttributeHandlerInterface` | Interface | Implemented by the handler of a custom property Attribute. |
+| `SuperKernel\Contract\PropertyContextInterface` | Interface | The property a handler processes, and its single assignment. |
+| `SuperKernel\Contract\EventInterface` | Interface | Marks the events of SuperKernel packages. |
+| `SuperKernel\Contract\ListenerInterface` | Interface | Implemented by an event listener: the events it handles and how it processes one. |
+| `SuperKernel\Contract\ExceptionDispatcherInterface` | Interface | Passes a throwable to the exception handlers. |
+| `SuperKernel\Contract\ReflectorInterface` | Interface | Returns PHP's native reflection objects, reused between calls. |
+| `SuperKernel\Contract\AutoLoaderInterface` | Interface | The class loader of the process, its pending class map, and its interceptors. |
+| `SuperKernel\Contract\StdoutLoggerInterface` | Interface | The PSR-3 logger that SuperKernel writes its records to. |
+
+## Behavior to know
+
+- A contract only works when a package implements it. Looking up a contract whose package is not installed fails in the container, with `SuperKernel\Di\Exception\NotFoundException` and the message `Container entry "<id>" has no definition.` in `super-kernel/di`.
+- The exceptions named in the interfaces' PHPDoc are raised by the implementing packages, with the messages those packages document.
+- Your own implementations of the Attribute metadata interfaces work at run time, but `super-kernel/annotator` publishes only its own models.
+
+## Documentation
+
+The developer documentation lists which package implements each contract and describes how to use each group, with links to the implementing packages: [SuperKernel Contract](https://github.com/super-kernel/.github/blob/main/docs/components/contract.md).
+
+## License
+
+Released under the MIT License. See [LICENSE](LICENSE).
